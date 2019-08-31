@@ -1,9 +1,7 @@
-import avatar from './aaa.jpg'
-import './index.scss'
-var img = new Image();
-img.src = avatar;
-img.classList.add('avatar');
+import Data from './content'
 
-var root = document.getElementById('root');
-console.log(root);
-root.append(img);
+var root =document.getElementById('root');
+import './index.scss'
+root.innerHTML='<div class="iconfont iconsanjiao">abc</div>';
+console.log(Data);
+
