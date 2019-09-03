@@ -1,10 +1,12 @@
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const path = require('path');
+
+
 // 引入路径管理模块
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //可以在webpack 运行到某个时刻的时候，进行工作
-
+const webpack = require('webpack');
 
 // sourceMap它是一个映射关系，他知道dist目录下main. j s文件96
 // 实际上对应的是src目录下index. js文件中的第一行
@@ -21,6 +23,9 @@ module.exports = {
     devServer: {
         contentBase: './dist',
         open: true,
+        hot: true,
+        hotOnly: true,
+        // 页面热更新，html、css可以直接解决，js需要再写代码兼容
         // proxy:{
         //     '/api':'http://localhost:3000'
         // }
@@ -56,6 +61,15 @@ module.exports = {
 
             },
             {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'postcss-loader'
+                ]
+
+            },
+            {
                 test: /\.(eot|ttf|svg|woff)$/,
                 use: {
                     loader: "file-loader",
@@ -64,15 +78,49 @@ module.exports = {
 
                     }
                 }
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: "babel-loader",
+                options: {
+                    // "presets": [["@babel/preset-env",{
+                        // target:{
+                        //     edge:"17",
+                        //     firefox:"60",
+                        //     chrome:"67",
+                        //     safari:"11.1",
+                        // },
+                        // 高版本不会转业务代码使用
+                        // useBuiltIns:"usage"
+                    // }]]
+                    "plugins": [
+                        [
+                            "@babel/plugin-transform-runtime",
+                            {
+                                "absoluteRuntime": false,
+                                "corejs": 2,
+                                "helpers": true,
+                                "regenerator": true,
+                                "useESModules": false
+                            }
+                        ]
+                    ]
+                    // 库代码使用，防止污染全局环境
+                }
             }]
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html'
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin()
 
     ],
+    optimization: {
+        usedExports:true
+    },
     output: {
         filename: "[name].js",  // 指定出口文件名
         path: path.resolve(__dirname, 'dist')
