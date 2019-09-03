@@ -6,4 +6,4 @@
 // packjson 顶部添加这个设置，让用到的文件打包，css文件不生效
 
 import {add } from './math'
-add(1,2);
+add(3,4);

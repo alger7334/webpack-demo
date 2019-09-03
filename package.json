@@ -4,9 +4,11 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "main": "index.js",
   "scripts": {
-    "watch": "webpack --watch",
-    "start": "webpack-dev-server"
+    "dev": "webpack-dev-server --config ./build/webpack.dev.js",
+    "build": "webpack-dev-server --config ./build/webpack.prod.js",
+    "build2": "webpack --config ./build/webpack.prod.js"
   },
   "author": "cdc",
   "license": "ISC",
@@ -28,7 +30,8 @@
     "url-loader": "^2.1.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^3.8.0",
+    "webpack-merge": "^4.2.2"
   },
   "browserslist": [
     "defaults",
